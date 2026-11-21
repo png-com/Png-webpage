@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Pick a photo job (remove background, upscale, change ratio, add effects) and get sent to a free tool that does it.">
+<meta name="theme-color" content="#3340ff">
+<title>png.com – pick the job, find the right tool</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400..800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#fbfbfe; --ink:#16203a; --muted:#5a6580; --line:#d9deec; --card:#ffffff; --glass:rgba(255,255,255,.5); --glass-edge:rgba(255,255,255,.85); --shadow:rgba(51,64,255,.18);
+  --blue:#3340ff; --blue-d:#2630c9; --check-a:#ffffff; --check-b:#e6e9f5;
+  --font:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#0f1424;--ink:#e9edfb;--muted:#9aa5c4;--line:#2a3352;--card:#171d33;--glass:rgba(23,29,51,.5);--glass-edge:rgba(255,255,255,.16);--shadow:rgba(0,0,0,.45);--check-a:#161c30;--check-b:#222a45;--blue:#4a56ff;--blue-d:#6670ff}}
+:root[data-theme="dark"]{--paper:#0f1424;--ink:#e9edfb;--muted:#9aa5c4;--line:#2a3352;--card:#171d33;--glass:rgba(23,29,51,.5);--glass-edge:rgba(255,255,255,.16);--shadow:rgba(0,0,0,.45);--check-a:#161c30;--check-b:#222a45;--blue:#4a56ff;--blue-d:#6670ff}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);line-height:1.5;isolation:isolate}
+body::before,body::after{content:"";position:fixed;z-index:-1;width:70vmax;height:70vmax;border-radius:50%;opacity:.55;pointer-events:none;will-change:transform}
+body::before{background:radial-gradient(circle,#6a74ff 0,rgba(106,116,255,0) 65%);top:-25vmax;left:-20vmax}
+body::after{background:radial-gradient(circle,#ff9a6b 0,rgba(255,154,107,0) 65%);bottom:-30vmax;right:-25vmax}
+.checker{
+  background-color:var(--check-a);
+  background-image:linear-gradient(45deg,var(--check-b) 25%,transparent 25%,transparent 75%,var(--check-b) 75%),
+                   linear-gradient(45deg,var(--check-b) 25%,transparent 25%,transparent 75%,var(--check-b) 75%);
+  background-size:20px 20px; background-position:0 0,10px 10px;
+}
+header,main,footer{max-width:960px;margin:0 auto;padding:0 20px}
+header{display:flex;align-items:center;gap:10px;padding-top:22px;padding-bottom:22px}
+.mark{width:28px;height:28px;border-radius:6px;border:2px solid var(--ink)}
+.name{font-weight:800;font-size:1.25rem;letter-spacing:-.01em}
+.hero{padding:36px 20px 28px;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+.hero-in{max-width:960px;margin:0 auto}
+.sub{margin:0;max-width:46ch;font-size:1.1rem;background:var(--glass);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid var(--glass-edge);border-radius:16px;display:inline-block;padding:12px 16px;box-shadow:0 8px 24px var(--shadow)}
+.sub.lead{font-size:clamp(1.25rem,4.6vw,1.9rem);font-weight:800;line-height:1.2;letter-spacing:-.015em;max-width:30ch}
+.grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));padding:32px 0 20px}
+.tile{position:relative;border:1px solid var(--glass-edge);border-radius:18px;background:var(--glass);-webkit-backdrop-filter:blur(12px) saturate(150%);backdrop-filter:blur(12px) saturate(150%);box-shadow:0 10px 30px var(--shadow),inset 0 1px 0 var(--glass-edge);display:flex;flex-direction:column;overflow:hidden}
+.tile::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.35) 45%,transparent 60%);transform:translateX(-120%);pointer-events:none}
+.tile .body{padding:16px;display:flex;flex-direction:column;gap:8px;flex:1}
+.tile h2{margin:0;font-size:1.3rem;letter-spacing:-.01em;font-weight:800}
+.tile p{margin:0;color:var(--muted);font-size:.98rem}
+.tile .limit{font-size:.9rem;border-left:3px solid var(--blue);padding-left:10px;color:var(--ink)}
+.btn{margin-top:auto;display:inline-block;text-align:center;text-decoration:none;font-weight:600;font-size:1rem;color:#fff;background:linear-gradient(180deg,#6b76ff,var(--blue) 55%,var(--blue-d));border:1px solid rgba(255,255,255,.35);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 6px 14px var(--shadow);position:relative;overflow:hidden;padding:12px 16px;border-radius:12px;min-height:44px}
+.btn::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.45) 50%,transparent 65%);transform:translateX(-120%)}
+.btn:hover{filter:brightness(1.08)}
+a:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.soon{border-style:dashed;background:transparent;box-shadow:none}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.tile,.sub{background:var(--card)}}
+@media (prefers-reduced-transparency:reduce){.tile,.sub{background:var(--card);-webkit-backdrop-filter:none;backdrop-filter:none}}
+.soon .body{justify-content:center;color:var(--muted)}
+footer{padding-top:18px;padding-bottom:40px;color:var(--muted);font-size:.9rem;max-width:62ch}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:start}
+.pair figure{margin:0}
+.pair figcaption{font-size:.85rem;color:var(--muted);margin-top:4px}
+.scene{position:relative;height:96px;border-radius:8px;border:2px solid var(--ink);overflow:hidden}
+.scene i{position:absolute;left:50%;top:50%;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:var(--blue);border:2px solid var(--ink)}
+.scene.busy{background:repeating-linear-gradient(60deg,#ffb703 0 12px,#fb8500 12px 24px)}
+.tile{scroll-margin-top:16px}
+.demo{margin:4px 0 2px}
+.ph{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border:2px solid var(--ink);border-radius:8px;background:var(--check-b)}
+.ph.r169{aspect-ratio:16/9}
+.ph.sq{aspect-ratio:1/1}
+.ph.warm{filter:sepia(.6) saturate(1.7) contrast(1.1)}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(4vmax,3vmax)}}
+@keyframes sweep{to{transform:translateX(120%)}}
+@media (prefers-reduced-motion:no-preference){
+  html{scroll-behavior:smooth}
+  body::before{animation:drift 18s ease-in-out infinite}
+  body::after{animation:drift 22s ease-in-out infinite reverse}
+  .hero-in{animation:rise .7s cubic-bezier(.2,.7,.2,1) backwards}
+  .tile{animation:rise .6s cubic-bezier(.2,.7,.2,1) backwards;animation-delay:calc(var(--i,0)*90ms + 150ms);transition:transform .25s,box-shadow .25s}
+  .tile:hover{transform:translateY(-6px);box-shadow:0 18px 40px var(--shadow),inset 0 1px 0 var(--glass-edge)}
+  .tile:hover::after,.btn:hover::after{animation:sweep .9s ease}
+  .btn{transition:filter .15s,transform .15s}
+  .btn:active{transform:scale(.97)}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="mark checker" aria-hidden="true"></div>
+  <span class="name">png.com</span>
+</header>
+
+<div class="hero checker">
+  <div class="hero-in">
+    <p class="sub lead">Pick the job. We’ll send you straight to a free tool that does it, so you don’t have to search.</p>
+  </div>
+</div>
+
+<main>
+<div class="grid" id="tools"></div>
+  <noscript><ul><li><a href="https://www.remove.bg">Remove bg</a></li><li><a href="https://www.upscale.media">Upscale</a></li><li><a href="https://www.birme.net">Change ratio</a></li><li><a href="https://pixlr.com/x/">Add effect</a></li></ul></noscript>
+</main>
+
+<footer>
+  Each button opens another website in a new tab. png.com doesn’t process or store your images, and free limits on those sites can change, so check them before you start. Example images are generated illustrations.
+</footer>
+
+<script>
+// To add a tool: add one object here. Check every URL still works before publishing.
+const tools = [
+  { title:"Remove the background", desc:"Cut your subject out and get a transparent PNG.",
+    limit:"The free download may be smaller than your original.",
+    name:"Remove bg", url:"https://www.remove.bg", ex:"bg" },
+  { title:"Make it bigger without blur", desc:"Increase resolution so a small image holds up when enlarged.",
+    limit:"Free use may cap file size or daily uploads.",
+    name:"Upscale", url:"https://www.upscale.media", ex:"up" },
+  { title:"Change the shape", desc:"Crop or resize to a new ratio such as 1:1, 4:5 or 16:9.",
+    limit:"It crops or stretches. It can’t add new background.",
+    name:"Change ratio", url:"https://www.birme.net", ex:"ratio" },
+  { title:"Add an effect", desc:"Filters, color looks and one-click styles.",
+    limit:"Some effects may need an account or a paid plan.",
+    name:"Add effect", url:"https://pixlr.com/x/", ex:"fx" }
+];
+
+const fig = (inner, cap) => '<figure>' + inner + '<figcaption>' + cap + '</figcaption></figure>';
+const photo = (g, cls, alt, blur) => '<img class="ph ' + cls + '" data-g="' + g + '"' + (blur ? ' data-blur=""' : '') + ' alt="' + alt + '" loading="lazy">';
+const EX = {
+  bg: '<div class="pair">' + fig('<div class="scene busy"><i></i></div>', 'Before') + fig('<div class="scene checker"><i></i></div>', 'After') + '</div>',
+  up: '<div class="pair">' + fig(photo(1, '', 'Sample image, blurry', true), 'Before') + fig(photo(1, '', 'Sample image, sharp'), 'After') + '</div>',
+  ratio: '<div class="pair">' + fig(photo(2, 'r169', 'Sample image in 16:9'), '16:9') + fig(photo(2, 'sq', 'Sample image cropped to 1:1'), '1:1') + '</div>',
+  fx: '<div class="pair">' + fig(photo(3, '', 'Sample image, original colors'), 'Before') + fig(photo(3, 'warm', 'Sample image with a warm effect'), 'After') + '</div>'
+};
+
+const grid = document.getElementById("tools");
+tools.forEach((t, i) => {
+  const a = document.createElement("article");
+  a.className = "tile";
+  a.id = "tool-" + i;
+  a.style.setProperty("--i", i);
+  a.innerHTML =
+    '<div class="body"><h2></h2><p class="d"></p><div class="demo"></div><p class="limit"></p>' +
+    '<a class="btn" target="_blank" rel="noopener noreferrer"></a></div>';
+  a.querySelector("h2").textContent = t.title;
+  a.querySelector(".demo").innerHTML = EX[t.ex];
+  a.querySelector(".d").textContent = t.desc;
+  a.querySelector(".limit").textContent = t.limit;
+  const b = a.querySelector(".btn");
+  b.href = t.url;
+  b.textContent = t.name;
+  b.setAttribute("aria-label", t.title + " (opens in a new tab)");
+  grid.appendChild(a);
+});
+
+// Random minimal landscapes drawn as inline SVG, so nothing loads from other sites. New set on every page load.
+function prng(s){let a=0;for(const c of s)a=(a*31+c.charCodeAt(0))|0;return()=>{a=(a+0x6D2B79F5)|0;let t=Math.imul(a^(a>>>15),1|a);t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296}}
+function landscape(seed, blur){
+  const r=prng(seed), W=480, H=360, hue=Math.floor(r()*360), g=(hue+140)%360;
+  const hill=(y,l)=>'<path d="M0 '+H+'V'+y+'C'+W*.25+' '+(y-60*r())+' '+W*.6+' '+(y+50*r())+' '+W+' '+(y-30*r())+'V'+H+'Z" fill="hsl('+g+',35%,'+l+'%)"/>';
+  let trees='';
+  for(let i=0;i<22;i++){const x=10+i*21+r()*8,y=250+r()*40,s=14+r()*10;trees+='<path d="M'+x+' '+y+'l'+(s/2)+' '+s*1.8+'h-'+s+'z" fill="hsl('+g+',40%,18%)"/>';}
+  return '<svg xmlns="http://www.w3.org/2000/svg" width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'">'+
+    '<defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="hsl('+hue+',65%,72%)"/><stop offset="1" stop-color="hsl('+((hue+30)%360)+',75%,90%)"/></linearGradient>'+
+    (blur?'<filter id="b"><feGaussianBlur stdDeviation="3.5"/></filter>':'')+'</defs>'+
+    '<g'+(blur?' filter="url(#b)"':'')+'>'+
+    '<rect width="'+W+'" height="'+H+'" fill="url(#s)"/>'+
+    '<circle cx="'+(90+r()*300)+'" cy="'+(70+r()*50)+'" r="'+(28+r()*14)+'" fill="hsl(42,95%,68%)"/>'+
+    hill(200,55)+hill(250,40)+hill(300,28)+trees+'</g></svg>';
+}
+const seed = Math.random().toString(36).slice(2, 8);
+document.querySelectorAll("img.ph").forEach(img => {
+  img.src = "data:image/svg+xml;utf8," + encodeURIComponent(landscape(seed + img.dataset.g, "blur" in img.dataset));
+});
+
+const s = document.createElement("article");
+s.className = "tile soon";
+s.style.setProperty("--i", tools.length);
+s.innerHTML = '<div class="body"><h2>More coming</h2><p>Compress, convert, restore old photos. Tell us what you need.</p></div>';
+grid.appendChild(s);
+</script>
+</body>
+</html>
